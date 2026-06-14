@@ -6,81 +6,115 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Solid8">
-    <title>Solid8 Tracker</title>
+    <title>Solid8 Console</title>
     <style>
-        :root {
-            --bg: #0b0f14;
-            --grey-panel: #161b22;
-            --grey-border: #212833;
-            --cyan: #06b6d4;
-            --cyan-glow: rgba(6, 182, 212, 0.12);
-            --brown: #c2410c;
-            --brown-glow: rgba(194, 65, 12, 0.15);
-            --text-main: #f8fafc;
-            --text-muted: #64748b;
-            --safe-top: env(safe-area-inset-top, 20px);
-            --safe-bottom: env(safe-area-inset-bottom, 20px);
-        }
+        :root { --bg: #05070b; --panel: #0f131a; --border: #1d2430; --cyan: #06b6d4; --cyan-glow: rgba(6, 182, 212, 0.15); --brown: #b45309; --brown-glow: rgba(180, 83, 9, 0.15); --text: #f8fafc; --muted: #64748b; --safe-top: env(safe-area-inset-top, 20px); --safe-bottom: env(safe-area-inset-bottom, 20px); }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; }
-        body { background-color: var(--bg); color: var(--text-main); padding: calc(var(--safe-top) + 20px) 16px calc(var(--safe-bottom) + 20px) 16px; min-height: 100vh; display: flex; flex-direction: column; }
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding: 0 4px; }
-        h1 { font-size: 24px; font-weight: 900; text-transform: uppercase; }
+        body { background-color: var(--bg); color: var(--text); padding: calc(var(--safe-top) + 20px) 16px calc(var(--safe-bottom) + 20px) 16px; min-height: 100vh; display: flex; flex-direction: column; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        h1 { font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; }
         h1 span { color: var(--cyan); }
-        .streak-display { background: var(--cyan-glow); border: 1px solid var(--cyan); color: var(--cyan); font-size: 11px; font-weight: 800; padding: 6px 12px; border-radius: 20px; letter-spacing: 0.5px; }
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .metric-card { background: var(--grey-panel); border: 1px solid var(--grey-border); border-radius: 16px; padding: 16px; }
-        .metric-label { font-size: 10px; text-transform: uppercase; color: var(--text-muted); font-weight: 800; margin-bottom: 4px; display: block; }
-        .metric-value { font-size: 22px; font-weight: 800; }
-        .metric-value span { font-size: 12px; color: var(--cyan); }
-        .content-panel { background: var(--grey-panel); border: 1px solid var(--grey-border); border-radius: 20px; padding: 20px; margin-bottom: 20px; }
-        .panel-header { font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
-        .check-wrapper { display: flex; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--grey-border); }
-        .check-wrapper:last-child { border-bottom: none; }
-        .native-chk { appearance: none; -webkit-appearance: none; width: 22px; height: 22px; border: 2px solid var(--grey-border); border-radius: 7px; outline: none; margin-right: 14px; display: flex; align-items: center; justify-content: center; background: var(--bg); transition: background 0.2s; }
-        .native-chk:checked { background: var(--cyan); border-color: var(--cyan); }
-        .native-chk:checked::after { content: '✓'; color: #0b0f14; font-size: 13px; font-weight: 900; }
-        .label-text { font-size: 14px; font-weight: 500; }
-        .native-chk:checked + .label-text { color: var(--text-muted); text-decoration: line-through; }
-        .calendar-matrix { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-        .matrix-cell { background: var(--bg); border: 1px solid var(--grey-border); aspect-ratio: 1; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--text-muted); }
+        .streak-display { background: var(--cyan-glow); border: 1px solid var(--cyan); color: var(--cyan); font-size: 11px; font-weight: 800; padding: 6px 12px; border-radius: 20px; }
+        .hud-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+        .hud-card { background: linear-gradient(135deg, var(--panel) 0%, #131922 100%); border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
+        .hud-card.cyan-card { border-left: 3px solid var(--cyan); }
+        .hud-card.brown-card { border-left: 3px solid var(--brown); }
+        .hud-lbl { font-size: 10px; text-transform: uppercase; color: var(--muted); font-weight: 800; margin-bottom: 4px; display: block; }
+        .hud-val { font-size: 22px; font-weight: 900; }
+        .hud-val span { font-size: 12px; color: var(--muted); }
+        .section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; display: block; }
+        .timeline-box { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 4px 16px; margin-bottom: 24px; }
+        .phase-block { display: flex; padding: 18px 0; border-bottom: 1px solid rgba(29, 36, 48, 0.5); align-items: flex-start; }
+        .phase-block:last-child { border-bottom: none; }
+        .chk-element { appearance: none; -webkit-appearance: none; width: 22px; height: 22px; border: 2px solid var(--border); border-radius: 8px; outline: none; margin-right: 16px; margin-top: 2px; display: flex; align-items: center; justify-content: center; background: var(--bg); flex-shrink: 0; }
+        .chk-element:checked { background: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 10px var(--cyan-glow); }
+        .chk-element:checked::after { content: '✓'; color: #05070b; font-size: 12px; font-weight: 900; }
+        .phase-content { flex-grow: 1; }
+        .phase-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .phase-name { font-size: 14px; font-weight: 800; }
+        .phase-time { font-size: 10px; font-weight: 700; background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 6px; color: var(--muted); }
+        .phase-ingredients { font-size: 12px; color: var(--muted); line-height: 1.4; }
+        .chk-element:checked + .phase-content .phase-name { color: var(--muted); text-decoration: line-through; }
+        .chk-element:checked + .phase-content .phase-ingredients { opacity: 0.3; }
+        .matrix-container { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 24px; }
+        .matrix-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .matrix-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+        .matrix-cell { background: var(--bg); border: 1px solid var(--border); aspect-ratio: 1; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--muted); }
         .matrix-cell.win { background: var(--cyan-glow); border-color: var(--cyan); color: var(--cyan); }
         .matrix-cell.fail { background: var(--brown-glow); border-color: var(--brown); color: #f97316; }
-        .system-purge-btn { text-align: center; color: var(--text-muted); font-size: 10px; font-weight: 700; text-transform: uppercase; border: none; background: none; margin-top: auto; padding: 12px 0; }
+        .purge-btn { text-align: center; color: rgba(100, 116, 139, 0.4); font-size: 10px; font-weight: 700; text-transform: uppercase; border: none; background: none; margin-top: auto; padding: 16px 0; width: 100%; }
     </style>
 </head>
 <body>
     <header>
         <h1>Solid<span>8</span></h1>
-        <div class="streak-display" id="streak-panel">🔥 0 DAY STREAK</div>
+        <div class="streak-display" id="streak-panel">🔥 0 DAYS</div>
     </header>
-    <div class="dashboard-grid">
-        <div class="metric-card">
-            <span class="metric-label">Est. Fat Deficit</span>
-            <span class="metric-value" id="calc-deficit">0 <span>kcal</span></span>
+
+    <div class="hud-grid">
+        <div class="hud-card cyan-card">
+            <span class="hud-lbl">Fat Deficit</span>
+            <span class="hud-val" id="calc-deficit">0 <span>kcal</span></span>
         </div>
-        <div class="metric-card">
-            <span class="metric-label">Target Weight</span>
-            <span class="metric-value">64<span>.0 kg</span></span>
+        <div class="hud-card brown-card">
+            <span class="hud-lbl">Target Size</span>
+            <span class="hud-val">64<span>.0 kg</span></span>
         </div>
     </div>
-    <div class="content-panel">
-        <div class="panel-header">Today's Targets</div>
-        <div class="check-wrapper"><input type="checkbox" class="native-chk" id="task1" onclick="commitChecks()"><span class="label-text">200 Reps Calisthenics Volume</span></div>
-        <div class="check-wrapper"><input type="checkbox" class="native-chk" id="task2" onclick="commitChecks()"><span class="label-text">Pure Rainwater Only (No Coconut)</span></div>
-        <div class="check-wrapper"><input type="checkbox" class="native-chk" id="task3" onclick="commitChecks()"><span class="label-text">Clean 2 PM Fast Breaker (No Salad Oils)</span></div>
-        <div class="check-wrapper"><input type="checkbox" class="native-chk" id="task4" onclick="commitChecks()"><span class="label-text">Strict 4 PM Snack (Measured Seeds)</span></div>
-        <div class="check-wrapper"><input type="checkbox" class="native-chk" id="task5" onclick="commitChecks()"><span class="label-text">6 PM Massel Broth (No Grazing)</span></div>
-        <div class="check-wrapper"><input type="checkbox" class="native-chk" id="task6" onclick="commitChecks()"><span class="label-text">Oil-Free Shared Family Dinner</span></div>
+
+    <span class="section-title">Daily Protocol Layout</span>
+    <div class="timeline-box">
+        <div class="phase-block">
+            <input type="checkbox" class="chk-element" id="task1" onclick="commitChecks()">
+            <div class="phase-content">
+                <div class="phase-meta"><span class="phase-name">Fasting & GTG Volume</span><span class="phase-time">8:30 PM - 2:00 PM</span></div>
+                <div class="phase-ingredients">💧 Rainwater Only | ☕ Black/Dandy Tea (&lt;15ml Almond Milk) | 💪 200 Reps Calisthenics</div>
+            </div>
+        </div>
+        <div class="phase-block">
+            <input type="checkbox" class="chk-element" id="task2" onclick="commitChecks()">
+            <div class="phase-content">
+                <div class="phase-meta"><span class="phase-name">The Fast Breaker</span><span class="phase-time">2:00 PM</span></div>
+                <div class="phase-ingredients">🧪 Pea Protein + Creatine | 🥕 Carrot | 🥗 Coles Salad Base (BIN OIL CAPSULE) + Mixed Beans</div>
+            </div>
+        </div>
+        <div class="phase-block">
+            <input type="checkbox" class="chk-element" id="task3" onclick="commitChecks()">
+            <div class="phase-content">
+                <div class="phase-meta"><span class="phase-name">Structured Snack</span><span class="phase-time">4:00 PM</span></div>
+                <div class="phase-ingredients">🍓 Measured Fruit Salad | 🌊 Seaweed Sheets | 🎃 Exactly 2 tbsp Pumpkin Seeds (No Grazing)</div>
+            </div>
+        </div>
+        <div class="phase-block">
+            <input type="checkbox" class="chk-element" id="task4" onclick="commitChecks()">
+            <div class="phase-content">
+                <div class="phase-meta"><span class="phase-name">The Danger Shield</span><span class="phase-time">6:00 PM - 7:00 PM</span></div>
+                <div class="phase-ingredients">🍲 Hot Massel Vegetable Broth / Dandy Tea | 🥒 Crunchy Celery & Cucumber Sticks</div>
+            </div>
+        </div>
+        <div class="phase-block">
+            <input type="checkbox" class="chk-element" id="task5" onclick="commitChecks()">
+            <div class="phase-content">
+                <div class="phase-meta"><span class="phase-name">Family Dinner Balance</span><span class="phase-time">7:30 PM - 8:30 PM</span></div>
+                <div class="phase-ingredients">🏡 Oil/Gluten/Soy-Free Meal | 🍝 50% Veggie Plate Rule for Rice/Pea Pasta | 🧪 Protein Backup</div>
+            </div>
+        </div>
     </div>
-    <div class="content-panel">
-        <div class="panel-header" style="display:flex; justify-content:space-between;"><span>8-Week Matrix</span><span style="font-size:10px; color:var(--text-muted); text-transform:none;">Tap = Win | Dbl Tap = Break</span></div>
-        <div class="calendar-matrix" id="matrix-grid-view"></div>
+
+    <div class="matrix-container">
+        <div class="matrix-header">
+            <span class="section-title" style="margin:0;">8-Week Data Grid</span>
+            <span style="font-size:10px; color:var(--muted)">Tap = Win | Double Tap = Break</span>
+        </div>
+        <div class="matrix-grid" id="matrix-grid-view"></div>
     </div>
-    <button class="system-purge-btn" onclick="clearSystemData()">Reset All App Data</button>
+
+    <button class="purge-btn" onclick="clearSystemData()">Purge Terminal Memory</button>
     <script>
         let datasetMatrix = JSON.parse(localStorage.getItem('s8_datamatrix')) || Array(56).fill(0);
         let trackingResetStamp = localStorage.getItem('s8_stampDate');
         const matrixGridView = document.getElementById('matrix-grid-view');
+
         function generateDashboardGrid() {
             matrixGridView.innerHTML = '';
             datasetMatrix.forEach((currentValue, dayIndex) => {
@@ -98,15 +132,16 @@
             });
             executeEngineCalculations();
         }
+
         function executeStateChange(targetIndex, isDoubleTrigger) {
             if (isDoubleTrigger) { datasetMatrix[targetIndex] = datasetMatrix[targetIndex] === 2 ? 0 : 2; }
             else { datasetMatrix[targetIndex] = datasetMatrix[targetIndex] === 1 ? 0 : 1; }
             localStorage.setItem('s8_datamatrix', JSON.stringify(datasetMatrix));
             generateDashboardGrid();
         }
+
         function executeEngineCalculations() {
-            let totalDeficitAccumulator = 0;
-            let currentLiveStreak = 0;
+            let totalDeficitAccumulator = 0; let currentLiveStreak = 0;
             datasetMatrix.forEach((value, index) => {
                 if (value === 1) {
                     let baseKcalIncrement = 700;
@@ -120,17 +155,18 @@
                 else break;
             }
             document.getElementById('calc-deficit').innerHTML = `${totalDeficitAccumulator.toLocaleString()} <span>kcal</span>`;
-            document.getElementById('streak-panel').innerText = `🔥 ${currentLiveStreak} DAY STREAK`;
+            document.getElementById('streak-panel').innerText = `🔥 ${currentLiveStreak} DAYS`;
         }
-        function commitChecks() { for (let i = 1; i <= 6; i++) { localStorage.setItem(`s8_v2_t_${i}`, document.getElementById(`task${i}`).checked); } }
-        function restoreChecks() { for (let i = 1; i <= 6; i++) { document.getElementById(`task${i}`).checked = localStorage.getItem(`s8_v2_t_${i}`) === 'true'; } }
+
+        function commitChecks() { for (let i = 1; i <= 5; i++) { localStorage.setItem(`s8_v3_t_${i}`, document.getElementById(`task${i}`).checked); } }
+        function restoreChecks() { for (let i = 1; i <= 5; i++) { let el = document.getElementById(`task${i}`); if(el) el.checked = localStorage.getItem(`s8_v3_t_${i}`) === 'true'; } }
+        
         const genericDateString = new Date().toDateString();
-        if (trackingResetStamp && trackingResetStamp !== genericDateString) { for (let i = 1; i <= 6; i++) localStorage.removeItem(`s8_v2_t_${i}`); }
+        if (trackingResetStamp && trackingResetStamp !== genericDateString) { for (let i = 1; i <= 5; i++) localStorage.removeItem(`s8_v3_t_${i}`); }
         localStorage.setItem('s8_stampDate', genericDateString);
-        function clearSystemData() { if (confirm("Reset tracker back to day 1?")) { localStorage.clear(); datasetMatrix = Array(56).fill(0); localStorage.setItem('s8_stampDate', genericDateString); generateDashboardGrid(); restoreChecks(); } }
-        generateDashboardGrid();
-        restoreChecks();
+
+        function clearSystemData() { if (confirm("Reset layout console back to day 1?")) { localStorage.clear(); datasetMatrix = Array(56).fill(0); localStorage.setItem('s8_stampDate', genericDateString); generateDashboardGrid(); restoreChecks(); } }
+        generateDashboardGrid(); restoreChecks();
     </script>
 </body>
 </html>
-
